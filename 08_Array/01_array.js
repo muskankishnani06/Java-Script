@@ -65,6 +65,6 @@ console.log("Available Fruits:", fruits);
 
 // Creating an array using Array constructor
 
-let price = new Array(50, 30, 80, 60, 120);
+let price = new Array(40, 30, 80, 60, 120);
 
 console.log("Fruit Prices:", price);

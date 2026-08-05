@@ -35,5 +35,5 @@ console.log("Movies List:", movies);
 
 console.log("My favorite movie is", movies[1]);
 
-console.log("Last movie is", movies[5]);
+console.log("Last movie is", movies[4]);
 
