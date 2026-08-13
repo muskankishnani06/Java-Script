@@ -68,3 +68,4 @@ console.log("Available Fruits:", fruits);
 let price = new Array(40, 30, 80, 60, 120);
 
 console.log("Fruit Prices:", price);
+
