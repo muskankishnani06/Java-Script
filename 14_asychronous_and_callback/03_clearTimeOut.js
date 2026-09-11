@@ -1,6 +1,7 @@
-let stop = setTimeout(()=>{
 
-    console.log("hi my name is Muskan....")
-},5000)
 
-clearTimeout(stop)
+let timer = setTimeout(()=>{console.log("timer will not execute"),2000})
+
+console.log("timer",timer)
+
+clearTimeout(timer)
