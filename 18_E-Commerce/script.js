@@ -73,6 +73,9 @@ let products = [
     }
 ];
 
+let localCartItem = JSON.parse(localStorage.getItem("cart")) || []
+
+
 function showProduct() {
 
     const productList = document.getElementById("product-list")
@@ -83,12 +86,12 @@ function showProduct() {
 
         productList.innerHTML += `<div class="col-md-4 mt-3">
         
-        <div div class="card product-card" >
-                <img src="${p.img}" class="card-img-top product-img alt="${p.name}">
+        <div class="card product-card" >
+               <img src="${p.img}" class="card-img-top product-img" alt="${p.name}">
                     <div class="card-body">
                         <h5 class="card-title">${p.name}</h5>
                         <p class="card-text">${p.price}</p>
-                       <button class="btn btn-primary">Add to Cart</button>
+                       <button class="btn btn-primary" onclick = "addToCart(${p.id})" >Add to Cart</button>
                     </div>
                 </div>
         
@@ -100,4 +103,38 @@ function showProduct() {
 }
 
 showProduct()
+
+// add to cart 
+
+function addToCart(id) {
+
+    try {
+
+        let productItem = localCartItem.find((p) => p.id === id)
+
+        console.log("already product", productItem)
+
+        if (productItem) {
+            productItem.qty++;
+        } else {
+            productItem = products.find((p) => p.id === id);
+
+            localCartItem.push({ ...productItem, qty: 1 })
+        }
+
+        updateLocalStorage();
+        alert("item added successfully")
+
+
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+function updateLocalStorage() {
+
+    localStorage.setItem("cart", JSON.stringify(localCartItem))
+
+}
 
