@@ -32,3 +32,10 @@ body {
   height: 300px;
   object-fit: cover;
 }
+.cartProductImg {
+  width: 90px;
+  object-fit: cover;
+}
+.modal-content{
+  width: 800px;
+}
