@@ -90,7 +90,7 @@ function showProduct() {
                <img src="${p.img}" class="card-img-top product-img" alt="${p.name}">
                     <div class="card-body">
                         <h5 class="card-title">${p.name}</h5>
-                        <p class="card-text">${p.price}</p>
+                        <h5 class="card-text">₹${p.price}</h5>
                        <button class="btn btn-primary" onclick = "addToCart(${p.id})" >Add to Cart</button>
                     </div>
                 </div>
@@ -145,6 +145,7 @@ function showCartItem() {
 
     modal.show()
     showCartData()
+    grandTotal()
 }
 
 function showCartData() {
@@ -162,13 +163,84 @@ function showCartData() {
         
     <td>
     <div class="d-flex justify-content-center align-items-center gap-3" >
-     <button class= "btn btn-outline-success" >+</button>
+     <button class= "btn btn-outline-success" onclick="increaseQty(${p.id})">+</button>
      <h5>${p.qty}</h5>
-     <button class= "btn btn-outline-warning" >-</button>
+     <button class= "btn btn-outline-warning" onclick="decreaseQty(${p.id})">-</button>
     </div>
     </td>
     <td>₹${p.qty * p.price}</td>
-    <td><button class= "btn btn-outline-danger">Remove</button></td>
+    <td><button class= "btn btn-outline-danger" onclick="removeProduct(${p.id})">Remove</button></td>
      </tr>`
     })
+}
+
+function increaseQty(id) {
+
+    try {
+        const product = localCartItem.find((p) => p.id === id)
+
+        if (product) {
+
+            product.qty++;
+        }
+
+        updateLocalStorage();
+        showCartData();
+
+    } catch (error) {
+
+        console.log(error)
+
+    }
+}
+
+function decreaseQty(id) {
+
+    try {
+        const index = localCartItem.findIndex((p) => p.id === id)
+        if (index === -1) {
+
+            throw new Error("product not found")
+        }
+        const product = localCartItem.find((p) => p.id === id)
+
+        if (product) {
+            product.qty--;
+        }
+
+        if (product.qty === 0) {
+            localCartItem.splice(index, 1)
+        }
+
+        updateLocalStorage();
+        showCartData();
+
+    } catch (error) {
+
+        console.log(error)
+    }
+}
+
+function removeProduct(id) {
+
+    const index = localCartItem.findIndex((p) => p.id === id)
+
+    localCartItem.splice(index, 1)
+
+
+    updateLocalStorage();
+    showCartData();
+
+}
+
+function grandTotal() {
+
+    const total = document.getElementById("GrandTotal")
+    total.innerHTML = "";
+
+    const totalAmounts = localCartItem.reduce((acc, curr) => {
+        return (acc += curr.price * curr.qty)
+    }, 0)
+
+    total.innerHTML = `Grand Total<h5>₹${totalAmounts}</h5>`
 }
