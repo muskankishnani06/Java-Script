@@ -92,6 +92,11 @@ function showProduct() {
                         <h5 class="card-title">${p.name}</h5>
                         <h5 class="card-text">₹${p.price}</h5>
                        <button class="btn btn-primary" onclick = "addToCart(${p.id})" >Add to Cart</button>
+                       <button class="btn btn-warning text-white" onclick = "updateToCart(${p.id})" >update Cart</button>
+                       <button class="btn btn-danger" onclick = "deleteToCart(${p.id})" >delete</button>
+
+
+                       
                     </div>
                 </div>
         
@@ -244,3 +249,129 @@ function grandTotal() {
 
     total.innerHTML = `Grand Total<h5>₹${totalAmounts}</h5>`
 }
+
+function checkOut() {
+    try {
+
+        if (localCartItem.length === 0) {
+            return alert("your cart is empty please add some product")
+        }
+        alert("your order placed successfully")
+
+        localCartItem = []
+        updateLocalStorage();
+
+        const cartModal = document.getElementById("cartModal")
+        modal = new bootstrap.Modal(cartModal)
+
+        modal.hide();
+
+    } catch (error) {
+
+        console.log(error)
+
+    }
+}
+
+function addProductModalShow() {
+
+    const addProductModal = document.getElementById("addProductModal")
+
+    const modal = new bootstrap.Modal(addProductModal)
+
+    modal.show();
+
+}
+
+function addProduct() {
+
+    const productName = document.getElementById("productName").value.trim();
+    const ProductPrice = document.getElementById("ProductPrice").value.trim();
+    const ProductImage = document.getElementById("ProductImage").value.trim();
+
+    if (!productName || !ProductPrice || !ProductImage) {
+        alert("product details are required")
+    }
+
+    const newProduct = {
+        id: new Date().getTime(),
+        name: productName,
+        price: ProductPrice,
+        img: ProductImage
+    };
+
+    console.log("new", newProduct)
+    products.push(newProduct)
+
+    updateLocalStorage();
+
+    console.log("products", products)
+
+    alert("new product added successfully")
+
+    showProduct();
+}
+
+function deleteToCart(id) {
+
+    const deleteProduct = products.find((p) => p.id === id)
+
+    if (!deleteProduct) {
+
+        alert("product not found")
+
+    }
+
+    products = products.filter((p) => p.id !== id)
+
+    alert("product deleted")
+
+    showProduct()
+}
+function updateProduct(id) {
+
+    const updateProduct = document.getElementById("updateProductModal")
+
+    const modal = new bootstrap.Modal(updateProduct)
+    modal.show()
+
+    const product = products.find((p) => p.id === id)
+
+    if (!product) {
+
+        alert("product not found")
+
+    }
+
+    document.getElementById("updateProductName").value = product.name;
+    document.getElementById("updateProductPrice").value = product.price;
+    document.getElementById("updateProductImage").value = product.img;
+
+    const index = products.find((p) => p.id === id)
+
+    if (index === -1) {
+        alert("product not found")
+    }
+    const form = document.getElementById("updateProductForm")
+
+    form.onsubmit = function (e) {
+        e.preventDefault();
+    }
+
+    const name = document.getElementById("updateProductName").value.trim();
+    const price = document.getElementById("updateProductPrice").value.trim();
+    const image = document.getElementById("updateProductImage").value.trim();
+
+    products[index] = {
+        ...products[index],
+        name, price, image,
+    }
+
+    alert("product detail updated")
+
+    modal.hide();
+
+    showProduct();
+
+};
+
